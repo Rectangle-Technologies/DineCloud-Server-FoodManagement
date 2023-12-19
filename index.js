@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const path = require('path');
+const JSONSchemaCore = require('./models/JSONSchemaCore')
 
 // Configuring dotenv
 dotenv.config();
@@ -40,6 +41,23 @@ var table = new Table({
     head: ['Method', 'Path', 'Description']
 });
 
+// Function to check schema
+const checkSchema = async (route) => {
+    const schemaKey = route.inputSchema.key;
+    const version = route.inputSchema.version;
+    const schemaIdentifier = `${schemaKey}_${version}`;
+
+    const schemaResponse = await JSONSchemaCore.findOne({ key: schemaKey, version: version });
+
+    if (!generatedSchema[schemaIdentifier]) {
+        generatedSchema[schemaIdentifier] = schemaResponse.schema;
+    }
+
+    if (!schemaResponse) {
+        throw new Error('Schema not found');
+    }
+}
+
 // Function to generate routers
 const generateRouters = async (routers) => {
     for (var routerIndex in routers) {
@@ -47,8 +65,18 @@ const generateRouters = async (routers) => {
         for (var routeIndex in router.router) {
             const Router = express.Router();
             const route = router.router[routeIndex];
+
+            if (process.env.FEATURE_API_INPUT_SCHEMA_VALIDATION === 'true') {
+                checkSchema(route)
+            }
+
+            // Creating single router
             Router[route.method](route.path, [...route.middlewares], route.controller);
+
+            // Adding route to table
             table.push([route.method, '/api' + router.path + route.path, route.description]);
+
+            // Adding router to app
             app.use(`/api${router.path}`, Router);
         }
     }
