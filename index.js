@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const fs = require('fs');
 const path = require('path');
 const JSONSchemaCore = require('./models/JSONSchemaCore')
+const authenticateUserMiddleware = require('./middlewares/authenticate');
 
 // Configuring dotenv
 dotenv.config();
@@ -34,6 +35,9 @@ app.use(cors());
 // Configuring body-parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Checking token
+app.use('/api', authenticateUserMiddleware)
 
 // Create table containg all routes
 var Table = require('cli-table');
