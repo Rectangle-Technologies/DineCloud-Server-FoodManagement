@@ -2,18 +2,12 @@ const { errorResponse } = require("../utils/response");
 const { TokenNotProvidedException, TokenNotValidException } = require("../exceptions/Base");
 const { UserNotFoundException } = require("../exceptions/User");
 const jwt = require('@netra-development-solutions/utils.crypto.jsonwebtoken');
+const { getModelDataById } = require("../utils/internalServerComms");
 
 const authenticateUserMiddleware = async (req, res, next) => {
     try {
-        const url = req.originalUrl.split('?')[0];
-
-        // Bypass for login and create client
-        if (url === '/api/user/login' || url === "/api/user/register" || url === '/api/client/create') {
-            return next();
-        }
-
+        // Extract token
         const token = req.header('Authorization')?.replace('Bearer ', '');
-
         if (!token) {
             throw new TokenNotProvidedException();
         }
@@ -21,7 +15,14 @@ const authenticateUserMiddleware = async (req, res, next) => {
         if (jwt.verify(token)) {
             // Decode token and check if user exists
             const decoded = jwt.decode(token);
-            const user = await getModelDataById('User', decoded._id, token)
+            var response = await getModelDataById('User', decoded._id, token)
+            var user = response.data.data
+
+            // Check if the user is a developer
+            if (!user) {
+                response = await getModelDataById('Developer', decoded._id, token)
+                user = response.data.data
+            }
 
             if (!user) {
                 throw new UserNotFoundException();
@@ -29,13 +30,15 @@ const authenticateUserMiddleware = async (req, res, next) => {
 
             req.user = user;
             req.token = token;
+            req.user.clientCode = process.env.BASE_CLIENT_CODE
         } else {
             throw new TokenNotValidException();
         }
 
         next();
     } catch (err) {
-        errorResponse(res, err.message, err.statusCode)
+        const errorObject = err?.response?.data || err;
+        errorResponse(res, errorObject, err.status || 500)
     }
 }
 

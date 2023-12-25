@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const JSONSchemaCore = require('./models/JSONSchemaCore')
 const authenticateUserMiddleware = require('./middlewares/authenticate');
+const { validateSchemaMiddleware } = require('./middlewares/validateBodyData');
 
 // Configuring dotenv
 dotenv.config();
@@ -36,14 +37,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Checking token
-app.use('/api', authenticateUserMiddleware)
-
 // Create table containg all routes
 var Table = require('cli-table');
 var table = new Table({
     head: ['Method', 'Path', 'Description']
 });
+
+var generatedSchema = {};
+var generatedRoutes = {};
+
+// Checking token
+app.use('/api', authenticateUserMiddleware, validateSchemaMiddleware(generatedSchema, generatedRoutes))
+
 
 // Function to check schema
 const checkSchema = async (route) => {
@@ -59,6 +64,10 @@ const checkSchema = async (route) => {
 
     if (!schemaResponse) {
         throw new Error('Schema not found');
+    }
+
+    if (!generatedRoutes[route.path]) {
+        generatedRoutes[route.path] = route;
     }
 }
 
