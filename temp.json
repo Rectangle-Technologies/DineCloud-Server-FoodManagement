@@ -1,20 +1,52 @@
 {
-    "name": {
-        "type": "string",
-        "required": true,
-        "trim": true
+    "_id": "658c2254cdeb0eaace8df09a",
+    "name": "FoodItem",
+    "description": "This is FoodItem collection",
+    "version": "1",
+    "schema": {
+        "name": {
+            "type": "string",
+            "required": true,
+            "trim": true
+        },
+        "description": {
+            "type": "string"
+        },
+        "categories": ["string", {
+                "trim": true
+            }
+        ],
+        "price": {
+            "type": "number",
+            "required": true
+        },
+        "ingredients": [ "string"],
+        "calories": {
+            "type": "number"
+        },
+        "availability": {
+            "type": "boolean",
+            "default": true
+        },
+        "imageUrl": {
+            "type": "string"
+        },
+        "highlights": ["string"],
+        "spiciness": {
+            "type": "string"
+        },
+        "clientCode": {
+            "type": "string",
+            "required": true
+        },
+        "clientId": {
+            "type": "string",
+            "required": true,
+            "ref": "Client"
+        }
     },
-    "price": {
-        "type": "number",
-        "required": true
-    },
-    "clientCode": {
-        "type": "string",
-        "required": true
-    },
-    "clientId": {
-        "type": "string",
-        "required": true,
-        "ref": "Client"
-    }
+    "locked": false,
+    "applicationId": "658baa1bb8aeea98c460249a",
+    "clientCode": "0C1F17-918C",
+    "clientId": "658bb36abe7556389e8c16a7"
 }

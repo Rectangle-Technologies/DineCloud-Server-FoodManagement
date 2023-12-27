@@ -6,6 +6,14 @@ const { getModelDataById } = require("../utils/internalServerComms");
 
 const authenticateUserMiddleware = async (req, res, next) => {
     try {
+        // get whole url from request
+        const url = req.originalUrl.split('?')[0];
+
+        // by pass authentication for login/register routes
+        if (url === "/api/user/login" || url === "/api/client/create" || url === "/api/user/register") {
+            return next();
+        }
+
         // Extract token
         const token = req.header('Authorization')?.replace('Bearer ', '');
         if (!token) {
@@ -15,32 +23,26 @@ const authenticateUserMiddleware = async (req, res, next) => {
         // Verify token
         if (jwt.verify(token)) {
             const decoded = jwt.decode(token);
-            // Check for user
-            var response = await getModelDataById('User', decoded._id, token);
-            const users = response.data.data[0].User;
-            if (users.length) {
-                req.user = { ...users[0], role: 1 };
-                req.token = token;
-                return next();
-            }
 
-            // Check if the user is a developer
-            response = await getModelDataById('Developer', decoded._id, token)
-            const developers = response.data.data[0].Developer;
-            if (!developers.length) {
+            // Check for user
+            const response = await getModelDataById('User', decoded._id, token);
+            const user = response.data.data;
+
+            if (!user.length) {
                 throw new UserNotFoundException();
             }
 
-            req.user = { ...developers[0], role: 0 };
+            req.user = user[0].User;
             req.token = token;
+
         } else {
             throw new TokenNotValidException();
         }
-
         next();
-    } catch (err) {
-        const errorObject = err?.response?.data || err;
-        errorResponse(res, errorObject, err.status || 500)
+    } catch (error) {
+        // responding with unauthorized error
+        const errorObject = error?.response?.data || error;
+        errorResponse(res, errorObject, error.statusCode);
     }
 }
 
