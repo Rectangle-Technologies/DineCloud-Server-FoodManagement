@@ -31,7 +31,23 @@ const getModelDataById = async (modelName, _id, token) => {
     });
 }
 
+const getModelDataByFilter = async (modelName, filter, token, headers = {}) => {
+    const domainModelBaseUrl = process.env.DINECLOUD_DOMAINMODEL_SERVER_URL;
+    const url = `${domainModelBaseUrl}${urls.domainModel.getModelDataByFilter}`;
+
+    return axios.post(url, {
+        [modelName]: filter
+    }, {
+        headers: {
+            "Authorization": `${token}`,
+            "Content-Type": "application/json",
+            ...headers
+        }
+    });
+}
+
 module.exports = {
     saveDataByModel,
-    getModelDataById
+    getModelDataById,
+    getModelDataByFilter
 }

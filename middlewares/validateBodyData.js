@@ -24,7 +24,7 @@ const validateSchemaMiddleware = (generatedSchema, generateRoutes) => {
 
             const data = req.body;
             if (!schemaResponse) {
-                return errorResponse(res, { error: 'Schema not found' }, 404);
+                return errorResponse(res, { error: 'Validation schema not found' }, 404);
             }
 
             schemaInstance = new JsonValidationEngine.ValidateSchema(data, schemaResponse);

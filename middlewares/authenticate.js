@@ -12,25 +12,27 @@ const authenticateUserMiddleware = async (req, res, next) => {
             throw new TokenNotProvidedException();
         }
 
+        // Verify token
         if (jwt.verify(token)) {
-            // Decode token and check if user exists
             const decoded = jwt.decode(token);
-            var response = await getModelDataById('User', decoded._id, token)
-            var user = response.data.data
-
-            // Check if the user is a developer
-            if (!user) {
-                response = await getModelDataById('Developer', decoded._id, token)
-                user = response.data.data
+            // Check for user
+            var response = await getModelDataById('User', decoded._id, token);
+            const users = response.data.data[0].User;
+            if (users.length) {
+                req.user = { ...users[0], role: 1 };
+                req.token = token;
+                return next();
             }
 
-            if (!user) {
+            // Check if the user is a developer
+            response = await getModelDataById('Developer', decoded._id, token)
+            const developers = response.data.data[0].Developer;
+            if (!developers.length) {
                 throw new UserNotFoundException();
             }
 
-            req.user = user;
+            req.user = { ...developers[0], role: 0 };
             req.token = token;
-            req.user.clientCode = process.env.BASE_CLIENT_CODE
         } else {
             throw new TokenNotValidException();
         }
