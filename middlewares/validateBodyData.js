@@ -9,7 +9,8 @@ const validateSchemaMiddleware = (generatedSchema, generateRoutes) => {
         try {
             // get api endpoint
             const startTimestamp = new Date().getTime();
-            const apiEndpoint = req.originalUrl.split('/')[req.originalUrl.split('/').length - 1];
+            var apiEndpoint = req.originalUrl.split('/')[req.originalUrl.split('/').length - 1];
+            apiEndpoint = apiEndpoint.split('?')[0];
 
             const schemaKey = generateRoutes[`/${apiEndpoint}`].inputSchema.key;
             const version = generateRoutes[`/${apiEndpoint}`].inputSchema.version;
@@ -19,7 +20,7 @@ const validateSchemaMiddleware = (generatedSchema, generateRoutes) => {
 
             // Check if schema is already generated
             if (!generatedSchema[schemaIdentifier][req.user.clientCode]) {
-                schemaResponse = (await JSONschemaCore.findOne({ key: schemaKey, version: version, clientCode: req.user.clientCode }))?.schema;
+                schemaResponse = (await JSONschemaCore.findOne({ key: schemaKey, version: version, clientCode: req.user.clientCode }));
             }
 
             const data = req.body;
@@ -27,7 +28,7 @@ const validateSchemaMiddleware = (generatedSchema, generateRoutes) => {
                 return errorResponse(res, { error: 'Validation schema not found' }, 404);
             }
 
-            schemaInstance = new JsonValidationEngine.ValidateSchema(data, schemaResponse);
+            schemaInstance = new JsonValidationEngine.ValidateSchema(data, schemaResponse.schema);
 
             const isValid = schemaInstance.validateData();
             const endTimestamp = new Date().getTime();

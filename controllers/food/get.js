@@ -1,12 +1,25 @@
-const { getModelDataByFilter } = require("../../utils/internalServerComms")
+const { getModelDataByFilter, getModelDataById } = require("../../utils/internalServerComms")
 const { errorResponse, successResponse } = require("../../utils/response")
 
-exports.GetAllItems = async (req, res) => {
+exports.GetAllFoodItems = async (req, res) => {
     try {
-        const response = await getModelDataByFilter('FoodItems', {}, req.headers.authorization);
+        const response = await getModelDataByFilter('FoodItem', {}, req.headers.authorization);
 
         successResponse(res, response.data, 'Food items fetched successfully')
     } catch (err) {
-        errorResponse(res, err?.response?.data, err.statusCode || 500)
+        const errorObject = err?.response?.data || err;
+        errorResponse(res, errorObject, err.statusCode || 500)
+    }
+}
+
+exports.GetFoodItemById = async (req, res) => {
+    try {
+        const id = req.query.id;
+        const response = await getModelDataById('FoodItem', id, req.headers.authorization);
+
+        successResponse(res, response.data, 'Food item fetched successfully')
+    } catch (err) {
+        const errorObject = err?.response?.data || err;
+        errorResponse(res, errorObject, err.statusCode || 500)
     }
 }
