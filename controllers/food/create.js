@@ -8,6 +8,6 @@ exports.CreateFoodItem = async (req, res) => {
         return successResponse(res, response.data, 'Food item created successfully')
     } catch (err) {
         const errorObject = err?.response?.data || err;
-        errorResponse(res, errorObject, err.statusCode || 500)
+        errorResponse(res, errorObject, err?.response?.status || 500)
     }
 }

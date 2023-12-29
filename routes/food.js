@@ -1,5 +1,6 @@
 const { CreateFoodItem } = require("../controllers/food/create");
 const { GetAllFoodItems, GetFoodItemById } = require("../controllers/food/get");
+const { UpdateFoodItem } = require("../controllers/food/update");
 
 const routes = [
     {
@@ -34,6 +35,17 @@ const routes = [
             version: '1'
         },
         description: 'Create a food item'
+    },
+    {
+        method: 'put',
+        path: '/updateFoodItem',
+        controller: UpdateFoodItem,
+        middlewares: [],
+        inputSchema: {
+            key: 'CreateFoodItemAPI',
+            version: '1'
+        },
+        description: 'Update a food item'
     }
 ]
 
