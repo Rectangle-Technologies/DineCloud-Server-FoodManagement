@@ -46,8 +46,26 @@ const getModelDataByFilter = async (modelName, filter, token, headers = {}) => {
     });
 }
 
+const deleteModelDataById = async (modelName, id, token, headers = {}) => {
+    const domainModelBaseUrl = process.env.DINECLOUD_DOMAINMODEL_SERVER_URL;
+    const url = `${domainModelBaseUrl}${urls.deleteModelDataById}`;
+
+    return axios.post(url, {
+        [modelName]: {
+            _id: id
+        }
+    }, {
+        headers: {
+            "Authorization": `${token}`,
+            "Content-Type": "application/json",
+            ...headers
+        }
+    });
+}
+
 module.exports = {
     saveDataByModel,
     getModelDataById,
-    getModelDataByFilter
+    getModelDataByFilter,
+    deleteModelDataById
 }

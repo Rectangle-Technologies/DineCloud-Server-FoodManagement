@@ -1,4 +1,5 @@
 const { CreateFoodItem } = require("../controllers/food/create");
+const { DeleteFoodItem } = require("../controllers/food/delete");
 const { GetAllFoodItems, GetFoodItemById } = require("../controllers/food/get");
 const { UpdateFoodItem } = require("../controllers/food/update");
 
@@ -46,6 +47,17 @@ const routes = [
             version: '1'
         },
         description: 'Update a food item'
+    },
+    {
+        method: 'delete',
+        path: '/deleteFoodItem',
+        controller: DeleteFoodItem,
+        middlewares: [],
+        inputSchema: {
+            key: 'HealthCheckAPI',
+            version: '1'
+        },
+        description: 'Delete a food item'
     }
 ]
 
