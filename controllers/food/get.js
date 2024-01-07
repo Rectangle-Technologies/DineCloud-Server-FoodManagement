@@ -15,9 +15,13 @@ exports.GetAllFoodItems = async (req, res) => {
 exports.GetFoodItemById = async (req, res) => {
     try {
         const id = req.query.id;
-        if (!id) return errorResponse(res, { error: 'id is required', message: 'Validation error' }, 404)
+        if (!id) return errorResponse(res, { error: 'id is required', message: 'Validation error' }, 403)
 
         const response = await getModelDataById('FoodItem', id, req.headers.authorization);
+
+        if (!response.data.data[0].FoodItem.length) {
+            return errorResponse(res, { error: 'Not found', message: 'Food item not found' }, 404)
+        }
 
         successResponse(res, response.data, 'Food item fetched successfully')
     } catch (err) {
