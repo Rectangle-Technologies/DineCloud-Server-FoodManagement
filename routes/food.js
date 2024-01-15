@@ -2,13 +2,14 @@ const { CreateFoodItem } = require("../controllers/food/create");
 const { DeleteFoodItem } = require("../controllers/food/delete");
 const { GetAllFoodItems, GetFoodItemById } = require("../controllers/food/get");
 const { UpdateFoodItem } = require("../controllers/food/update");
+const { validateBranchMiddleware } = require("../middlewares/validateBranch");
 
 const routes = [
     {
         method: 'get',
         path: '/getAllFoodItems',
         controller: GetAllFoodItems,
-        middlewares: [],
+        middlewares: [validateBranchMiddleware],
         inputSchema: {
             key: 'HealthCheckAPI',
             version: '1'
@@ -19,7 +20,7 @@ const routes = [
         method: 'get',
         path: '/getFoodItem',
         controller: GetFoodItemById,
-        middlewares: [],
+        middlewares: [validateBranchMiddleware],
         inputSchema: {
             key: 'HealthCheckAPI',
             version: '1'
@@ -30,7 +31,7 @@ const routes = [
         method: 'post',
         path: '/createFoodItem',
         controller: CreateFoodItem,
-        middlewares: [],
+        middlewares: [validateBranchMiddleware],
         inputSchema: {
             key: 'CreateFoodItemAPI',
             version: '1'
@@ -41,7 +42,7 @@ const routes = [
         method: 'put',
         path: '/updateFoodItem',
         controller: UpdateFoodItem,
-        middlewares: [],
+        middlewares: [validateBranchMiddleware],
         inputSchema: {
             key: 'CreateFoodItemAPI',
             version: '1'
@@ -52,7 +53,7 @@ const routes = [
         method: 'delete',
         path: '/deleteFoodItem',
         controller: DeleteFoodItem,
-        middlewares: [],
+        middlewares: [validateBranchMiddleware],
         inputSchema: {
             key: 'HealthCheckAPI',
             version: '1'
