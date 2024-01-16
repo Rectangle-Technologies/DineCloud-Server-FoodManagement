@@ -6,23 +6,23 @@ const { validateBranchMiddleware } = require("../middlewares/validateBranch");
 
 const routes = [
     {
-        method: 'get',
+        method: 'post',
         path: '/getAllFoodItems',
         controller: GetAllFoodItems,
         middlewares: [validateBranchMiddleware],
         inputSchema: {
-            key: 'HealthCheckAPI',
+            key: 'GetFoodItemAPI',
             version: '1'
         },
         description: 'Get all food items'
     },
     {
-        method: 'get',
+        method: 'post',
         path: '/getFoodItem',
         controller: GetFoodItemById,
         middlewares: [validateBranchMiddleware],
         inputSchema: {
-            key: 'HealthCheckAPI',
+            key: 'GetFoodItemAPI',
             version: '1'
         },
         description: 'Get single food item by id'
