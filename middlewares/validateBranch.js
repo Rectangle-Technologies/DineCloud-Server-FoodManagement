@@ -1,4 +1,4 @@
-const { getModelDataById, getModelDataByFilter } = require('../utils/internalServerComms');
+const { getModelDataByFilter } = require('../utils/internalServerComms');
 const { errorResponse } = require('../utils/response');
 
 exports.validateBranchMiddleware = async (req, res, next) => {
