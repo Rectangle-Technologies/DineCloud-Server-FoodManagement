@@ -9,7 +9,15 @@ exports.DeleteFoodItem = async (req, res) => {
         const response = await deleteModelDataById('FoodItem', id, req.headers.authorization);
 
         if (response.data.data[0].FoodItem.deletedCount === 0)
-            return errorResponse(res, { error: 'Food item not found', message: 'Food item not found' }, 404)
+            return errorResponse(res, {
+                "status": "error",
+                "data": null,
+                "error": {
+                    "name": "ModelDataNotFoundException",
+                    "message": "Food item not found",
+                    "statusCode": 404
+                }
+            }, 404)
 
         return successResponse(res, response.data.data, 'Food item deleted successfully')
     } catch (err) {
