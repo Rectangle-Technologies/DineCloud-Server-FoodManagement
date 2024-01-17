@@ -55,7 +55,7 @@ const routes = [
         controller: DeleteFoodItem,
         middlewares: [validateBranchMiddleware],
         inputSchema: {
-            key: 'HealthCheckAPI',
+            key: 'GetFoodItemAPI',
             version: '1'
         },
         description: 'Delete a food item'

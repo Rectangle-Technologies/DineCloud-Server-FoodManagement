@@ -20,7 +20,15 @@ exports.GetFoodItemById = async (req, res) => {
         const response = await getModelDataById('FoodItem', id, req.headers.authorization);
 
         if (!response.data.data[0].FoodItem.length) {
-            return errorResponse(res, { error: 'Not found', message: 'Food item not found' }, 404)
+            return errorResponse(res, {
+                "status": "error",
+                "data": null,
+                "error": {
+                    "name": "ModelDataNotFoundException",
+                    "message": "Food item not found",
+                    "statusCode": 404
+                }
+            }, 404)
         }
 
         successResponse(res, response.data, 'Food item fetched successfully')

@@ -11,8 +11,7 @@ exports.UpdateFoodItem = async (req, res) => {
         return successResponse(res, response.data.data, 'Food item updated successfully')
     } catch (err) {
         const errorObject = err?.response?.data || err;
-        if (errorObject.message === 'Model data not found') {
-            errorObject.message = 'Food item not found'
+        if (errorObject.error.message === 'Model data not found') {
             errorObject.error.message = 'Food item not found'
         }
         errorResponse(res, errorObject, err?.response?.status || 500)
