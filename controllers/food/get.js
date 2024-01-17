@@ -21,12 +21,12 @@ exports.GetFoodItemById = async (req, res) => {
 
         if (!response.data.data[0].FoodItem.length) {
             return errorResponse(res, {
-                "status": "error",
-                "data": null,
-                "error": {
-                    "name": "ModelDataNotFoundException",
-                    "message": "Food item not found",
-                    "statusCode": 404
+                status: "error",
+                data: null,
+                error: {
+                    name: "ModelDataNotFoundException",
+                    message: "Food item not found",
+                    statusCode: 404
                 }
             }, 404)
         }

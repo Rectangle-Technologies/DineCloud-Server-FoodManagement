@@ -11,7 +11,15 @@ exports.validateBranchMiddleware = async (req, res, next) => {
 
         // Check if branch exists
         if (!branchResponse?.data?.data[0]?.Branch?.length) {
-            return errorResponse(res, { error: 'Not found', message: 'This branch does not exist or does not belong to this client' }, 404);
+            return errorResponse(res, {
+                status: "error",
+                data: null,
+                error: {
+                    name: "Authorization error",
+                    message: "This branch does not exist or does not belong to this client",
+                    statusCode: 401
+                }
+            }, 401);
         }
         next();
     } catch (error) {
