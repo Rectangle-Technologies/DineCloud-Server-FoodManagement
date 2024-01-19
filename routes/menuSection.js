@@ -1,3 +1,4 @@
+const { AddFoodItem } = require("../controllers/menuSection/addFoodItem")
 const { CreateMenuSection } = require("../controllers/menuSection/create")
 const { DeleteMenuSection } = require("../controllers/menuSection/delete")
 const { GetAllMenuSections, GetMenuSectionById } = require("../controllers/menuSection/get")
@@ -59,6 +60,17 @@ const routes = [
             version: '1'
         },
         description: 'Delete a menu section'
+    },
+    {
+        method: 'post',
+        path: '/addFoodItem',
+        controller: AddFoodItem,
+        middlewares: [validateBranchMiddleware],
+        inputSchema: {
+            key: 'AddFoodItemToMenuSectionAPI',
+            version: '1'
+        },
+        description: 'Add food item to menu section'
     }
 ]
 
