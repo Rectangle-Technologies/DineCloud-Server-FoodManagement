@@ -1,7 +1,7 @@
 const { AddFoodItem } = require("../controllers/menuSection/addFoodItem")
 const { CreateMenuSection } = require("../controllers/menuSection/create")
 const { DeleteMenuSection } = require("../controllers/menuSection/delete")
-const { GetAllMenuSections, GetMenuSectionById } = require("../controllers/menuSection/get")
+const { GetAllMenuSections, GetMenuSectionById, GetFoodItemsByMenuSectionId } = require("../controllers/menuSection/get")
 const { UpdateMenuSection } = require("../controllers/menuSection/update")
 const { validateBranchMiddleware } = require("../middlewares/validateBranch")
 
@@ -71,6 +71,17 @@ const routes = [
             version: '1'
         },
         description: 'Add food item to menu section'
+    },
+    {
+        method: 'post',
+        path: '/getFoodItemsByMenuSectionId',
+        controller: GetFoodItemsByMenuSectionId,
+        middlewares: [validateBranchMiddleware],
+        inputSchema: {
+            key: 'GetFoodItemAPI',
+            version: '1'
+        },
+        description: 'Get food items by menu section id'
     }
 ]
 

@@ -5,7 +5,7 @@ exports.GetAllFoodItems = async (req, res) => {
     try {
         const response = await getModelDataByFilter('FoodItem', {}, req.headers.authorization);
 
-        successResponse(res, response.data, 'Food items fetched successfully')
+        successResponse(res, response.data.data, 'Food items fetched successfully')
     } catch (err) {
         const errorObject = err?.response?.data || err;
         errorResponse(res, errorObject, err?.response?.status || 500)
@@ -31,7 +31,7 @@ exports.GetFoodItemById = async (req, res) => {
             }, 404)
         }
 
-        successResponse(res, response.data, 'Food item fetched successfully')
+        successResponse(res, response.data.data, 'Food item fetched successfully')
     } catch (err) {
         const errorObject = err?.response?.data || err;
         errorResponse(res, errorObject, err?.response?.status || 500)

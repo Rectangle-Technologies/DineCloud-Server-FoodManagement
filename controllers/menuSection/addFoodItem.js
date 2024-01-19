@@ -49,7 +49,7 @@ exports.AddFoodItem = async (req, res) => {
         // Save food item
         const saveFoodItemResponse = await saveDataByModel('FoodItem', foodItem, req.headers.authorization);
 
-        return successResponse(res, saveFoodItemResponse.data, 'Menu section updated successfully')
+        return successResponse(res, saveFoodItemResponse.data.data, 'Menu section updated successfully')
     } catch (error) {
         console.log('error', error)
         const errorObject = error?.response?.data || error;
