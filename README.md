@@ -57,6 +57,8 @@ To start the server run
 
 ## API Reference
 
+**Note:** Anything written within ${} represents a variable and has to be replaced by the value.
+
 ### Food
 
 #### 1. Create food item
@@ -344,5 +346,3 @@ It removes a food item from the menu section.
 | `foodItemId`      | `string` | **Required**. Id of the food itme to be removed |
 | `branchId`      | `string` | **Required**. Branch id of the client |
 | `branchCode`      | `string` | **Required**. Branch code of the client |
-
-**Note:** Anything written within ${} represents a variable and has to be replaced by the value.
