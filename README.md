@@ -60,7 +60,10 @@ To start the server run
 ### Summary
 
 **Food:**
-### 1. Create food item
+#### 1. Create food item
+
+**Menu Section:**
+#### 8. Remove food item from menu section
 
 ### Food
 
