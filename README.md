@@ -57,6 +57,11 @@ To start the server run
 
 ## API Reference
 
+### Summary
+
+**Food:**
+### 1. Create food item
+
 ### Food
 
 #### 1. Create food item
