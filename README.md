@@ -57,14 +57,6 @@ To start the server run
 
 ## API Reference
 
-### Summary
-
-**Food:**
-#### 1. Create food item
-
-**Menu Section:**
-#### 8. Remove food item from menu section
-
 ### Food
 
 #### 1. Create food item
