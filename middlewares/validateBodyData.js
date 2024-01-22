@@ -2,7 +2,7 @@ const JSONschemaCore = require('../models/JSONSchemaCore');
 const JsonValidationEngine = require('@netra-development-solutions/json_validation_engine-lib');
 
 // importing utils
-const { successResponse, errorResponse } = require('../utils/response');
+const { errorResponse } = require('../utils/response');
 
 const validateSchemaMiddleware = (generatedSchema, generateRoutes) => {
     const ValidationFunction = async (req, res, next) => {
