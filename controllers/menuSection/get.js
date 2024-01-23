@@ -1,4 +1,4 @@
-const { getModelDataByFilter, getModelDataById } = require("../../utils/internalServerComms")
+const { getModelDataByFilter } = require("../../utils/internalServerComms")
 const { errorResponse, successResponse } = require("../../utils/response")
 
 exports.GetAllMenuSections = async (req, res) => {
@@ -27,7 +27,9 @@ exports.GetMenuSectionById = async (req, res) => {
             }, 403)
         }
 
-        const response = await getModelDataById('MenuSection', id, req.headers.authorization)
+        const response = await getModelDataByFilter('MenuSection',
+            { _id: id, ...req.body },
+            req.headers.authorization)
 
         if (!response.data.data[0].MenuSection.length) {
             return errorResponse(res, {
@@ -63,7 +65,9 @@ exports.GetFoodItemsByMenuSectionId = async (req, res) => {
             }, 403)
         }
 
-        const menuSectionResponse = await getModelDataById('MenuSection', id, req.headers.authorization)
+        const menuSectionResponse = await getModelDataByFilter('MenuSection',
+            { _id: id, ...req.body },
+            req.headers.authorization)
 
         if (!menuSectionResponse.data.data[0].MenuSection.length) {
             return errorResponse(res, {

@@ -1,4 +1,4 @@
-const { getModelDataByFilter, getModelDataById } = require("../../utils/internalServerComms")
+const { getModelDataByFilter } = require("../../utils/internalServerComms")
 const { errorResponse, successResponse } = require("../../utils/response")
 
 exports.GetAllFoodItems = async (req, res) => {
@@ -17,7 +17,7 @@ exports.GetFoodItemById = async (req, res) => {
         const id = req.query.id;
         if (!id) return errorResponse(res, { error: 'id is required', message: 'Validation error' }, 403)
 
-        const response = await getModelDataById('FoodItem', id, req.headers.authorization);
+        const response = await getModelDataByFilter('FoodItem', { _id: id, ...req.body }, req.headers.authorization);
 
         if (!response.data.data[0].FoodItem.length) {
             return errorResponse(res, {

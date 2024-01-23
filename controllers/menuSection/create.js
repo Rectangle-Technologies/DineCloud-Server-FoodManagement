@@ -1,4 +1,4 @@
-const { saveDataByModel } = require("../../utils/internalServerComms")
+const { saveDataByModel, getModelDataByFilter } = require("../../utils/internalServerComms")
 const { errorResponse, successResponse } = require("../../utils/response")
 
 exports.CreateMenuSection = async (req, res) => {
@@ -27,7 +27,9 @@ exports.AddFoodItem = async (req, res) => {
         }, 403)
 
         // Check if menu section exists
-        const menuSectionResponse = await getModelDataById('MenuSection', id, req.headers.authorization);
+        const menuSectionResponse = await getModelDataByFilter('MenuSection',
+            { _id: id, branchId: req.body.branchId, branchCode: req.body.branchCode },
+            req.headers.authorization);
         if (!menuSectionResponse.data.data[0].MenuSection.length) {
             return errorResponse(res, {
                 status: "error",
@@ -41,7 +43,9 @@ exports.AddFoodItem = async (req, res) => {
         }
 
         // Get food item
-        const foodItemResponse = await getModelDataById('FoodItem', req.body.foodItemId, req.headers.authorization);
+        const foodItemResponse = await getModelDataByFilter('FoodItem',
+            { _id: req.body.foodItemId, branchId: req.body.branchId, branchCode: req.body.branchCode },
+            req.headers.authorization);
         if (!foodItemResponse.data.data[0].FoodItem.length) {
             return errorResponse(res, {
                 status: "error",
